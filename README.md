@@ -4,8 +4,13 @@
 ***
 ## Table of Contents
 1. [Instalacion](#Instalacion)
-2. [Mediciones de Compresion](#Mediciones-de-Compresion)
-3. [Mediciones de Performance](#Mediciones-de-Performance)
+2. [Mediciones de Compresion](#Mediciones-de-Compresion) 
+   * [Medicion sin Compresion](#Sin-compresion) 
+   * [Medicion con GZIP](#GZIP) 
+4. [Mediciones de Performance](#Mediciones-de-Performance)
+   * [Medicion Nativa Node](#ProfNodeJS) 
+   * [Medicion con Artillery](#Artillery) 
+   * [Medicion con Autocannon](#Autocannon)
 
 ***
 <a name="Instalacion"></a>
@@ -23,6 +28,7 @@ $ npm start
 <a name="Mediciones-de-Compresion"></a>
 ## Mediciones de Compresion
 
+<a name="Sin-compresion"></a>
 ### Sin compresion
 ```
 http://localhost:8080/api/info 
@@ -37,7 +43,7 @@ info              http://localhost:8080/api/info                                
 info.hbs          http://localhost:8080/plantillas/info.hbs                                     200 fetch       info.js:16  1.4   kB  87  ms		
 -----------------------------------------------------------------------------------------------------------------------------------------------
 ```
-
+<a name="GZIP"></a>
 ### Compresion libreria GZIP
 
 ```
@@ -61,6 +67,7 @@ info.hbs          http://localhost:8080/plantillas/info.hbs                     
 
 
 -------------------------------------------------------------------
+<a name="ProfNodeJS"></a>
 ### Medicion con --prof de NodeJS
 
 ```
@@ -68,7 +75,8 @@ $ node --prof src/server.js
 $ node --prof-process .\nombreArchivo > process.log
 ```
 
-1) Sin Log
+1. Sin Log
+ ```
  [Shared libraries]:
    ticks  total  nonlib   name
    2155   63.6%          C:\WINDOWS\SYSTEM32\ntdll.dll
@@ -81,8 +89,9 @@ $ node --prof-process .\nombreArchivo > process.log
       0    0.0%    0.0%  C++
       7    0.2%   77.8%  GC
    3379   99.7%          Shared libraries
-
-2) Con Log
+```
+2. Con Log
+ ```
  [Shared libraries]:
    ticks  total  nonlib   name
    1523   54.8%          C:\Program Files\nodejs\node.exe
@@ -95,15 +104,17 @@ $ node --prof-process .\nombreArchivo > process.log
       0    0.0%    0.0%  C++
       6    0.2%  120.0%  GC
    2773   99.8%          Shared libraries
-   
+   ```
 -------------------------------------------------------------------
+<a name="Artillery"></a>
 ### Medicion con Artillery
 
 ```
 $ artillery quick --count 50 --num 20 http://localhost:8080/info
 ```
 
-1) Sin Log
+1. Sin Log
+```
 Started phase 0, duration: 1s @ 20:39:23(-0300) 2022-02-11
 Report @ 20:39:33(-0300) 2022-02-11
 Elapsed time: 12 seconds
@@ -119,7 +130,8 @@ Elapsed time: 12 seconds
     p99: 3173.6
   Codes:
     200: 313
-
+```
+```
 Report @ 20:39:43(-0300) 2022-02-11
 Elapsed time: 22 seconds
   Scenarios launched:  0
@@ -134,7 +146,8 @@ Elapsed time: 22 seconds
     p99: 1564
   Codes:
     200: 475
-
+```
+```
 Report @ 20:39:48(-0300) 2022-02-11
 Elapsed time: 27 seconds
   Scenarios launched:  0
@@ -149,7 +162,8 @@ Elapsed time: 27 seconds
     p99: 1740.9
   Codes:
     200: 212
-
+```
+```
 All virtual users finished
 Summary report @ 20:39:48(-0300) 2022-02-11
   Scenarios launched:  50
@@ -166,8 +180,10 @@ Summary report @ 20:39:48(-0300) 2022-02-11
     0: 50 (100%)
   Codes:
     200: 1000
+```
+2. Con Log
 
-2) Con Log
+```
 Started phase 0, duration: 1s @ 23:55:33(-0300) 2022-02-11
 Report @ 23:55:43(-0300) 2022-02-11
 Elapsed time: 13 seconds
@@ -183,7 +199,8 @@ Elapsed time: 13 seconds
     p99: 1790.4
   Codes:
     200: 529
-
+```
+```
 Report @ 23:55:53(-0300) 2022-02-11
 Elapsed time: 23 seconds
   Scenarios launched:  0
@@ -198,7 +215,8 @@ Elapsed time: 23 seconds
     p99: 1795
   Codes:
     200: 471
-
+```
+```
 All virtual users finished
 Summary report @ 23:55:53(-0300) 2022-02-11
   Scenarios launched:  50
@@ -215,8 +233,9 @@ Summary report @ 23:55:53(-0300) 2022-02-11
     0: 50 (100%)
   Codes:
     200: 1000
-
+```
 -------------------------------------------------------------------
+<a name="Autocannon"></a>
 ### Medicion con Autocannon
 
 ```
@@ -257,13 +276,13 @@ Running 20s test @ http://localhost:8080/info
     │ Latency │ 255 ms │ 1080 ms │ 3301 ms │ 3670 ms │ 1238.14 ms │ 691.97 ms │ 3975 ms │   
     └─────────┴────────┴─────────┴─────────┴─────────┴────────────┴───────────┴─────────┘   
     
-      ┌───────────┬─────────┬─────────┬─────────┬────────┬─────────┬───────┬─────────┐   
-      │ Stat      │ 1%      │ 2.5%    │ 50%     │ 97.5%  │ Avg     │ Stdev │ Min     │   
-      ├───────────┼─────────┼─────────┼─────────┼────────┼─────────┼───────┼─────────┤   
-      │ Req/Sec   │ 18      │ 18      │ 83      │ 122    │ 79.25   │ 29.2  │ 18      │   
-      ├───────────┼─────────┼─────────┼─────────┼────────┼─────────┼───────┼─────────┤   
-      │ Bytes/Sec │ 21.6 kB │ 21.6 kB │ 99.5 kB │ 146 kB │ 94.9 kB │ 35 kB │ 21.6 kB │   
-      └───────────┴─────────┴─────────┴─────────┴────────┴─────────┴───────┴─────────┘   
+    ┌───────────┬─────────┬─────────┬─────────┬────────┬─────────┬───────┬─────────┐   
+    │ Stat      │ 1%      │ 2.5%    │ 50%     │ 97.5%  │ Avg     │ Stdev │ Min     │   
+    ├───────────┼─────────┼─────────┼─────────┼────────┼─────────┼───────┼─────────┤   
+    │ Req/Sec   │ 18      │ 18      │ 83      │ 122    │ 79.25   │ 29.2  │ 18      │   
+    ├───────────┼─────────┼─────────┼─────────┼────────┼─────────┼───────┼─────────┤   
+    │ Bytes/Sec │ 21.6 kB │ 21.6 kB │ 99.5 kB │ 146 kB │ 94.9 kB │ 35 kB │ 21.6 kB │   
+    └───────────┴─────────┴─────────┴─────────┴────────┴─────────┴───────┴─────────┘   
 
 
 Se adjunta diagrama de flama, archivo: "Grafico_0xConLog.JPG"
