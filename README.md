@@ -19,7 +19,7 @@
  
 ```
 $ git clone https://github.com/chewydc/ch-backend-ddelcampo-entrega14.git
-$ cd ch-backend-ddelcampo-entrega1
+$ cd ch-backend-ddelcampo-entrega14
 $ npm install
 $ npm start
 ```
